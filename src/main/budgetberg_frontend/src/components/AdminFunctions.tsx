@@ -29,7 +29,7 @@ const AdminFunctions: React.FC = () => {
 
   return (
     <>
-      <List>
+      <List >
         {adminFunctionsList.map((adminFunction) => (
           <ListItem
             key={adminFunction.key}

@@ -6,29 +6,23 @@ import AdminFunctions from "../components/AdminFunctions";
 
 let isInitialLoad = true;
 
-const AdminPanel : React.FC = () => {
-    const isLoggedIn = useSelector((state:any) => state.login.isLoggedIn);
-    const dispatch = useDispatch();
+const AdminPanel: React.FC = () => {
+  const isLoggedIn = useSelector((state: any) => state.login.isLoggedIn);
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        if (isInitialLoad){
-            isInitialLoad = false; 
-            const jwtToken = localStorage.getItem('jwtToken');
-            const jwtTokenExpiration = localStorage.getItem('jwtTokenExpiration');
-            
-            if (jwtToken && Number(jwtTokenExpiration) >= Date.now()) {
-                dispatch(loginActions.logIn({}));
-            }
-        }
+  useEffect(() => {
+    if (isInitialLoad) {
+      isInitialLoad = false;
+      const jwtToken = localStorage.getItem("jwtToken");
+      const jwtTokenExpiration = localStorage.getItem("jwtTokenExpiration");
 
-    });
-    
+      if (jwtToken && Number(jwtTokenExpiration) >= Date.now()) {
+        dispatch(loginActions.logIn({}));
+      }
+    }
+  });
 
-    return (
-        <>
-        {isLoggedIn ? <AdminFunctions/> : <Login/>}
-        </>
-    );
-}
+  return <div className="col-md-12">{isLoggedIn ? <AdminFunctions /> : <Login />}</div>;
+};
 
 export default AdminPanel;

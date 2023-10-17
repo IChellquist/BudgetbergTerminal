@@ -12,12 +12,14 @@
 .body {
     flex: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: start;
+    align-items: start;
 }
 
 .bottom {
     flex: 0;
     border-top: solid 1px var(--adm-color-border)
 }
+
+
 

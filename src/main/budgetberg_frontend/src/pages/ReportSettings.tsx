@@ -1,5 +1,7 @@
+import ReportSettingsComponent from "../components/ReportSettingsComponent"
+
 const ReportSettings : React.FC = () => {
-    return (<div>Report Settings</div>)
+    return (<ReportSettingsComponent/>)
 }
 
 export default ReportSettings;
