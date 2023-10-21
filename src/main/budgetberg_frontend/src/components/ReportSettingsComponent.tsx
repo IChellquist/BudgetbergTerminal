@@ -1,8 +1,17 @@
-import { Checkbox, Collapse, Space } from "antd-mobile";
+import {
+  Calendar,
+  Checkbox,
+  Collapse,
+  Selector,
+  SelectorOption,
+  Space,
+} from "antd-mobile";
 import { CollapsePanel } from "antd-mobile/es/components/collapse/collapse";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import reportSettingsSlice, { reportSettingsActions } from "../reduxstore/reportSettings-slice";
+import reportSettingsSlice, {
+  reportSettingsActions,
+} from "../reduxstore/reportSettings-slice";
 
 const ReportSettingsComponent: React.FC = () => {
   const dispatch = useDispatch();
@@ -11,6 +20,12 @@ const ReportSettingsComponent: React.FC = () => {
   );
   const sectorsSlice = useSelector(
     (state: any) => state.reportSettings.sectors
+  );
+  const reportTypeSlice = useSelector(
+    (state: any) => state.reportSettings.reportType
+  );
+  const selectedDateSlice = useSelector(
+    (state: any) => state.reportSettings.dateSelected
   );
   const exchanges = [
     "AMEX",
@@ -34,12 +49,32 @@ const ReportSettingsComponent: React.FC = () => {
     "Materials",
     "Technology",
   ];
-  const [exchangesSelected, setExchangesSelected] = useState(["NASD"]);
-  const [sectorsSelected, setSectorsSelected] = useState(["Health Care"]);
+
+  const reportTypes = [
+    {
+      label: "Strong Volume Gainers",
+      value: "StrongVolumeGainers",
+    },
+    {
+      label: "Strong Volume Decliners",
+      value: "StrongVolumeDecliners",
+    },
+  ];
 
   return (
     <>
-      <Collapse defaultActiveKey={["exchanges", "sectors"]}>
+      <Collapse
+        defaultActiveKey={["exchanges", "sectors", "reportType", "date"]}
+      >
+        <CollapsePanel key={"reportType"} title={"Select Report Type"}>
+          <Selector
+            options={reportTypes}
+            value={reportTypeSlice}
+            onChange={(selectedReportType) => {
+              dispatch(reportSettingsActions.setReportType(selectedReportType));
+            }}
+          />
+        </CollapsePanel>
         <CollapsePanel key={"exchanges"} title={"Select Exchanges"}>
           <Space
             className="Exchanges"
@@ -108,7 +143,6 @@ const ReportSettingsComponent: React.FC = () => {
                 dispatch(
                   reportSettingsActions.setSectors(selected as string[])
                 );
-                
               }}
             >
               <Space
@@ -122,10 +156,18 @@ const ReportSettingsComponent: React.FC = () => {
                     {sector}
                   </Checkbox>
                 ))}
-
               </Space>
             </Checkbox.Group>
           </Space>
+        </CollapsePanel>
+        <CollapsePanel key={"date"} title={"Select Date"}>
+          <Calendar
+            selectionMode="single"
+            value={selectedDateSlice}
+            onChange={(selectedDate) => {
+              dispatch(reportSettingsActions.setDate(selectedDate));
+            }}
+          />
         </CollapsePanel>
       </Collapse>
     </>
