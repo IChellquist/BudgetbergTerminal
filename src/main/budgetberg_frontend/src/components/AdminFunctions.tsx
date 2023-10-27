@@ -1,14 +1,25 @@
 import { Button, List } from "antd-mobile";
 import { ListItem } from "antd-mobile/es/components/list/list-item";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "../reduxstore/login-slice";
 
 const AdminFunctions: React.FC = () => {
   const dispatch = useDispatch();
   const [showError, setShowError] = useState(false);
 
-  const test = {balls: "balls"};
+  const exchangesSlice = useSelector(
+    (state: any) => state.reportSettings.exchanges
+  );
+  const sectorsSlice = useSelector(
+    (state: any) => state.reportSettings.sectors
+  );
+  const reportTypeSlice = useSelector(
+    (state: any) => state.reportSettings.reportType
+  );
+  const selectedDateSlice = useSelector(
+    (state: any) => state.reportSettings.dateSelected
+  );
 
   const adminFunctionsList = [
     {
@@ -44,7 +55,12 @@ const AdminFunctions: React.FC = () => {
               const response = await fetch("http://localhost:8080" + "/api/admin/testBackendReportFetch", {
                 method: "POST",
                 body: JSON.stringify({
-                  test: "balls"
+                  reportType: reportTypeSlice[0],
+                  exchanges: exchangesSlice,
+                  sectors: sectorsSlice,
+                  dateSelected: selectedDateSlice
+
+
                 }),
                 headers: {
                   "Authorization": "Bearer " + localStorage.getItem("jwtToken"),
@@ -56,10 +72,9 @@ const AdminFunctions: React.FC = () => {
                 // Check for an HTTP error status (e.g., 404 Not Found, 500 Internal Server Error)
                 throw new Error(`HTTP error! Status: ${response.status}`);
               }
+              console.log("Test success!")
             
-              // If the response is OK, proceed with processing the data
-              const data = await response.json();
-              console.log("Data:", data);
+           
             } catch (error) {
               // Handle any errors that occur during the request
               console.error("An error occurred:", error);
