@@ -48,6 +48,7 @@ const ReportSettingsComponent: React.FC = () => {
     "Industrial",
     "Materials",
     "Technology",
+    "Not Specified"
   ];
 
   const reportTypes = [
