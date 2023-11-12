@@ -161,9 +161,6 @@ const TestImageComponent = (base64Image:any) => {
     <img src={`data:image/png;base64,${base64Image}`} />
   </div>
   )
-    
-  
-
 }
 
 export default AdminFunctions;
