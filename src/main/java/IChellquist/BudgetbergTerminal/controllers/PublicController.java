@@ -28,10 +28,11 @@ public class PublicController {
     StockReportRetrievalService stockReportRetrievalService;
 
     @GetMapping("/retrievestockreports")
-    public ResponseEntity<?> searchForAndReturnStockReports(@RequestParam("reportType") String reportType, @RequestParam("exchanges") List<String> exchanges, @RequestParam("sectors") List<String> sectors, @RequestParam("dateSelected") Date dateSelected) {
+    public ResponseEntity<?> searchForAndReturnStockReports(@RequestParam("reportType") String reportType, @RequestParam("exchanges") List<String> exchanges, @RequestParam("sectors") List<String> sectors, @RequestParam("dateSelected") Date dateSelected, @RequestParam("offset") String offset) {
 
         try {
-            List<StockReport> stockReportsRetrieved = stockReportRetrievalService.retrieveStockReports(reportType,exchanges,sectors,dateSelected);
+
+            List<StockReport> stockReportsRetrieved = stockReportRetrievalService.retrieveStockReports(reportType,exchanges,sectors,dateSelected, Integer.parseInt(offset));
             return ResponseEntity.ok(stockReportsRetrieved);
         }
         catch(Error e){

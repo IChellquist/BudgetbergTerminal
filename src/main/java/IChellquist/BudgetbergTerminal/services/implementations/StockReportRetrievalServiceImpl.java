@@ -21,7 +21,7 @@ public class StockReportRetrievalServiceImpl implements StockReportRetrievalServ
     @Autowired
     private MongoTemplate mongoTemplate;
     @Override
-    public List<StockReport> retrieveStockReports(String reportType, List<String> exchanges, List<String> sectors, Date dateSelected) {
+    public List<StockReport> retrieveStockReports(String reportType, List<String> exchanges, List<String> sectors, Date dateSelected, Integer offset) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(dateSelected);
 
@@ -42,6 +42,8 @@ public class StockReportRetrievalServiceImpl implements StockReportRetrievalServ
                 Criteria.where("stock.sector").in(sectors));
 
         Query query = new Query(criteria);
+        query.skip(offset);
+        query.limit(3);
         return mongoTemplate.find(query, StockReport.class);
     }
 }

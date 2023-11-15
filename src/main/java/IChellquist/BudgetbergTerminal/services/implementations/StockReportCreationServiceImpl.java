@@ -16,6 +16,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -45,6 +46,7 @@ import java.util.stream.Collectors;
 @Service
 @Getter
 @Setter
+@Slf4j
 public class StockReportCreationServiceImpl implements StockReportCreationService {
 
     @Value("${gainer_table_url}")
@@ -88,8 +90,9 @@ public class StockReportCreationServiceImpl implements StockReportCreationServic
             try {
                 //put the thread to sleep as to not overload the source of images with requests
                 Random randomGen = new Random();
-                int random = randomGen.nextInt(5);
-                Thread.sleep(2000*random);
+                int upper = 5, lower = 1;
+                int random = randomGen.nextInt(upper-lower) + lower;
+                Thread.sleep(1000*random);
 
                 List<NewsArticle> newsArticleList = getNewsArticleForStock(stock);
                 BufferedImage stockImage = getStockImage(stock.getSymbol());
@@ -102,11 +105,17 @@ public class StockReportCreationServiceImpl implements StockReportCreationServic
                 newStockReport.setReportImage(convertBufferedImageToByteArray(stockImage));
 
                 stockReportRepository.save(newStockReport);
+                log.info("Stock Report for " + stock.getSymbol() + " saved");
+
 
             }
             catch (Exception e){
+                log.error(e.getMessage());
+                log.error("Error creating stock report for stock " + stock.getSymbol() );
+
             }
         }
+        log.info("Stock report creation request complete");
         }
 
 
@@ -147,13 +156,15 @@ public class StockReportCreationServiceImpl implements StockReportCreationServic
 
     @Override
     public List<NewsArticle> getNewsArticleForStock(Stock stock) throws Exception {
-        URIBuilder builder = new URIBuilder("https://api.cognitive.microsoft.com/bing/v7.0/news/search");
+        URIBuilder builder = new URIBuilder("https://api.bing.microsoft.com/v7.0/news/search");
         //Sets the parameters for the search
         builder.setParameter("q", stock.getName());
         builder.setParameter("count", "10"); //The number of news articles returned
         builder.setParameter("offset", "0");
         builder.setParameter("mkt", "en-us"); //The language that will be returned
         builder.setParameter("safeSearch", "Moderate"); //Prevents my search results from being crowded by porn.
+        String DEBUGheader = azureHttpHeader;
+        String DEBUGApiKey = azureApiKey;
 
         //do the news searches
         URI uri = builder.build();

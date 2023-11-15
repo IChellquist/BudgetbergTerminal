@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface StockReportRetrievalService {
-    List<StockReport> retrieveStockReports(String reportType, List<String> exchanges, List<String> sectors, Date dateSelected);
+    List<StockReport> retrieveStockReports(String reportType, List<String> exchanges, List<String> sectors, Date dateSelected, Integer offset);
 
 
 }

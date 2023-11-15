@@ -45,10 +45,10 @@ const AdminFunctions: React.FC = () => {
       ),
     },
     {
-      key: "testBackendReportFetch",
-      title: "Test Backend Report Fetch",
+      key: "testBackendReportGeneration",
+      title: "Test Backend Report Generation",
       description:
-        "Test the backend report fetching using the available redux state for part of the test",
+        "Use the Redux state of the report settings to generate a report",
       children: (
         <Button
           color={"primary"}
@@ -56,7 +56,7 @@ const AdminFunctions: React.FC = () => {
           onClick={async (event) => {
             try {
               const response = await fetch(
-                "http://localhost:8080" + "/api/admin/testBackendReportFetch",
+                "http://localhost:8080" + "/api/admin/testBackendReportGeneration",
                 {
                   method: "POST",
                   body: JSON.stringify({
@@ -87,7 +87,7 @@ const AdminFunctions: React.FC = () => {
             }
           }}
         >
-          Test Backend Report Fetch
+          Test Backend Report Generation
         </Button>
       ),
     },

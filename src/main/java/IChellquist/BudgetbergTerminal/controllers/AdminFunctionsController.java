@@ -32,8 +32,8 @@ public class AdminFunctionsController {
 
 
 
-@PostMapping("/testBackendReportFetch")
-public ResponseEntity<?> testBackendReportFetch(@Valid @RequestBody ReportSettingsRequest reportSettingsRequest) throws Exception {
+@PostMapping("/testBackendReportGeneration")
+public ResponseEntity<?> testBackendReportGeneration(@Valid @RequestBody ReportSettingsRequest reportSettingsRequest) throws Exception {
     //preprocess frontend data before passing onto the service method
     String reportType = reportSettingsRequest.getReportType();
     List<String> exchanges = reportSettingsRequest.getExchanges();

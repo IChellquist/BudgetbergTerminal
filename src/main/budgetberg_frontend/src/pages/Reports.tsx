@@ -55,6 +55,7 @@ const Reports: React.FC = () => {
     queryUrl.searchParams.set("exchanges", exchangesSlice);
     queryUrl.searchParams.set("sectors", sectorsSlice);
     queryUrl.searchParams.set("dateSelected", selectedDateSlice);
+    queryUrl.searchParams.set("offset", stockReportList.length.toString())
     console.log(queryUrl.href);
 
     try {
@@ -63,21 +64,20 @@ const Reports: React.FC = () => {
         // Check for an HTTP error status (e.g., 404 Not Found, 500 Internal Server Error)
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const newReports = await response.json();
-      setStockReportList((oldReports) => [...oldReports, ...newReports]);
-      setHasMore(false);
-      console.log(newReports);
+      const newReports : StockReport[] = await response.json();
+      if (newReports.length == 0) setHasMore(false)
+      else {setStockReportList((oldReports) => [...oldReports, ...newReports]);}
       return;
     } catch (error) {
       console.log(error);
-      setHasMore(false);
+      setHasMore(false); //should I keep this line here? 
     }
   }
 
   return (
     <>
-      <Space direction={"vertical"}>
-        <h6>{reportTypeSlice}</h6>
+      <Space direction={"vertical"} style={{"--gap-vertical": "8px"}}>
+        <h6>{reportTypeSlice + "----- Click the picture to see news articles"}</h6>
         <Modal
         open = {popUpVisible}
         onOk ={() => {setPopUpVisibile(false)}}
@@ -95,7 +95,7 @@ const Reports: React.FC = () => {
               clickable={true}
               children={
                 <>
-                  <div>
+                  <div style={{padding: '20px'}}>
                     <img
                       style={{ maxWidth: "100%", height: "auto" }}
                       src={`data:image/png;base64,${stockReport.reportImage}`}
@@ -105,6 +105,7 @@ const Reports: React.FC = () => {
               }
               onClick={() => {
                 Modal.info({
+                  title: "News Articles",
                   content: 
                   <>
                   {
