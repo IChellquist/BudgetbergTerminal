@@ -77,7 +77,10 @@ public class WebSecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll().requestMatchers("/api/public/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll().
+                        requestMatchers("/api/public/**").permitAll().
+                        requestMatchers("/", "/manifest.json", "/favicon.ico", "/static/**").permitAll().
+                        anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

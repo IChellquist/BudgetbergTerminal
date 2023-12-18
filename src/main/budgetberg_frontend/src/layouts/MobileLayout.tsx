@@ -13,7 +13,7 @@ const Mobile : React.FC = () => {
               <Outlet/>
             </div>
             <div className="bottom">
-              <AppBottom></AppBottom>
+              <AppBottom/>
             </div>
           </div>
         </>

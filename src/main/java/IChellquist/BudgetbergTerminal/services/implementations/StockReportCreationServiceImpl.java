@@ -32,6 +32,8 @@ import org.springframework.boot.autoconfigure.web.reactive.function.client.WebCl
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
@@ -47,6 +49,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Slf4j
+@EnableScheduling
 public class StockReportCreationServiceImpl implements StockReportCreationService {
 
     @Value("${gainer_table_url}")
@@ -73,6 +76,16 @@ public class StockReportCreationServiceImpl implements StockReportCreationServic
         webClient.getOptions().setCssEnabled(true);
         webClient.getOptions().setThrowExceptionOnScriptError(false);
         webClient.setAjaxController(new NicelyResynchronizingAjaxController());
+    }
+
+
+    @Scheduled(cron = "0 0 17 ? * MON-FRI")
+    public void scheduledDefaultStockReportCreation() throws Exception {
+        String reportType = "StrongVolumeGainers";
+        List<String> exchanges = new ArrayList<String>(Arrays.asList(new String[]{"AMEX", "NASD", "NYSE", "OTCMKT"}));
+        List<String> sectors = new ArrayList<String>(Arrays.asList(new String[]{"Communication Services", "Consumer Discretionary", "Energy", "Financial", "Health Care", "Industrial", "Materials", "Technology", "Not Specified"}));
+        createStockReportsFromPredefinedScan(reportType, exchanges, sectors);
+        log.info("Scheduled CRON stock report creation successful at 5PM on a weekday");
     }
 
 

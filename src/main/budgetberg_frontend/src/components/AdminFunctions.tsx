@@ -56,7 +56,7 @@ const AdminFunctions: React.FC = () => {
           onClick={async (event) => {
             try {
               const response = await fetch(
-                "http://localhost:8080" + "/api/admin/testBackendReportGeneration",
+                process.env.REACT_APP_API_URL + "/api/admin/testBackendReportGeneration",
                 {
                   method: "POST",
                   body: JSON.stringify({

@@ -29,15 +29,9 @@ const ReportSettingsComponent: React.FC = () => {
   );
   const exchanges = [
     "AMEX",
-    "CSE",
-    "LSE",
     "NASD",
-    "NEO",
-    "NSE",
     "NYSE",
     "OTCMKT",
-    "TSE",
-    "TSXV",
   ];
   const sectors = [
     "Communication Services",
