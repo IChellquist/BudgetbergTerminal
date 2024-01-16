@@ -79,7 +79,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll().
                         requestMatchers("/api/public/**").permitAll().
-                        requestMatchers("/", "/manifest.json", "/favicon.ico", "/static/**").permitAll().
+                        requestMatchers("/", "/manifest.json", "/favicon.ico", "static/**").permitAll().
                         anyRequest().authenticated())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
