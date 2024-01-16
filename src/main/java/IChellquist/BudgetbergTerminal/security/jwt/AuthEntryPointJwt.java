@@ -15,7 +15,7 @@ import java.io.IOException;
 public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-        log.error("Unauthorized error: {}", authException.getMessage() + "For URI: " + request.getRequestURI());
+        log.error("Unauthorized error: {}", authException.getMessage() + "For URI: " + request.getRequestURL());
         response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Error: Unauthorized");
     }
 }
