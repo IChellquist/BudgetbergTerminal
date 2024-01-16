@@ -176,8 +176,7 @@
 								<copy todir="${project.build.directory}/classes/static">
 									<fileset dir="${project.basedir}/src/main/budgetberg_frontend/build" />
 								</copy>
-								<copy todir="${project.build.directory}/classes/templates">
-									<fileset dir="${project.basedir}/src/main/budgetberg_frontend/build/index.html"/>
+								<copy todir="${project.build.directory}/classes/templates" file="${project.basedir}/src/main/budgetberg_frontend/build/index.html">
 								</copy>
 							</target>
 						</configuration>
