@@ -49,7 +49,7 @@ const Reports: React.FC = () => {
 
   async function retrieveMoreStockReports() {
     const queryUrl = new URL(
-      "http://localhost:8080" + "/api/public/retrievestockreports"
+      process.env.REACT_APP_API_URL + "/api/public/retrievestockreports"
     );
     queryUrl.searchParams.set("reportType", reportTypeSlice);
     queryUrl.searchParams.set("exchanges", exchangesSlice);
