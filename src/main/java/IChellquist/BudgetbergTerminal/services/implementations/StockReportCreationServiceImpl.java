@@ -79,7 +79,7 @@ public class StockReportCreationServiceImpl implements StockReportCreationServic
     }
 
 
-    @Scheduled(cron = "0 0 17 ? * MON-FRI")
+    @Scheduled(cron = "0 0 17 ? * MON-FRI", zone = "America/New_York")
     public void scheduledDefaultStockReportCreation() throws Exception {
         String reportType = "StrongVolumeGainers";
         List<String> exchanges = new ArrayList<String>(Arrays.asList(new String[]{"AMEX", "NASD", "NYSE", "OTCMKT"}));

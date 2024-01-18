@@ -72,6 +72,9 @@ public class AuthorizationController {
     }
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
+        if (true){
+            log.info("User creation is currently disabled");
+        }
         if (userRepository.existsByUsername(signupRequest.getUsername())){
             return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is taken"));
         }
