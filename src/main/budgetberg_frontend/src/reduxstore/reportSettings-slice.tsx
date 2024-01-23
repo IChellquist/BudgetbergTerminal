@@ -1,12 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+//init date to last previous weekday
+let date = new Date();
+date.setDate(date.getDate() - 1);
+ if (date.getDay() === 0 || date.getDay() === 6){
+    if (date.getDay() === 0){date.setDate(date.getDate() - 2)}
+    else {date.setDate(date.getDate() - 1)}
+  }
+
 const reportSettingsSlice  = createSlice({
     name: 'reportSettings',
     initialState: {
         exchanges: ["NASD"],
         sectors: ["Health Care"],
         reportType: ["StrongVolumeGainers"],
-        dateSelected: new Date()
+        dateSelected: date
         
     },
     reducers: {

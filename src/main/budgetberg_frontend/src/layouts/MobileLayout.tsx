@@ -9,7 +9,7 @@ const Mobile : React.FC = () => {
             <div className="top">
               <NavBar>Budgetberg Terminal</NavBar>
             </div>
-            <div className="body">
+            <div className="body" style={{overflowY: 'scroll'}}>
               <Outlet/>
             </div>
             <div className="bottom">

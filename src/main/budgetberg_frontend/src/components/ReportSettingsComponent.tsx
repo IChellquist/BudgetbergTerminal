@@ -24,7 +24,7 @@ const ReportSettingsComponent: React.FC = () => {
   const reportTypeSlice = useSelector(
     (state: any) => state.reportSettings.reportType
   );
-  const selectedDateSlice = useSelector(
+  const selectedDateSlice : Date = useSelector(
     (state: any) => state.reportSettings.dateSelected
   );
   const exchanges = [
@@ -55,6 +55,10 @@ const ReportSettingsComponent: React.FC = () => {
       value: "StrongVolumeDecliners",
     },
   ];
+
+ 
+
+ 
 
   return (
     <>
