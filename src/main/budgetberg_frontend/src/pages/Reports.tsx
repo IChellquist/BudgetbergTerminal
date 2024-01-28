@@ -97,7 +97,7 @@ const Reports: React.FC = () => {
               children={
                 <>
                   <div style={{padding: '20px'}}>
-                    <div style={{fontSize: '2vw', fontWeight: 'bold', height: "auto"}}>
+                    <div style={{fontSize: '2vmin', fontWeight: 'bold', height: "auto"}}>
                       {stockReport.stock.name}
                       <Divider direction="vertical"/>
                       {stockReport.stock.exchange}
