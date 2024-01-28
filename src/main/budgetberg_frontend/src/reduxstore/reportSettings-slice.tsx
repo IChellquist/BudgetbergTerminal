@@ -11,8 +11,18 @@ date.setDate(date.getDate() - 1);
 const reportSettingsSlice  = createSlice({
     name: 'reportSettings',
     initialState: {
-        exchanges: ["NASD"],
-        sectors: ["Health Care"],
+        exchanges: ["NASD", "NYSE"],
+        sectors: [
+            "Communication Services",
+            "Consumer Discretionary",
+            "Energy",
+            "Financial",
+            "Health Care",
+            "Industrial",
+            "Materials",
+            "Technology",
+            "Not Specified"
+          ],
         reportType: ["StrongVolumeGainers"],
         dateSelected: date
         

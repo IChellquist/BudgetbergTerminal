@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import { CenterPopup, Collapse, InfiniteScroll, List, Popover, Space } from "antd-mobile";
+import { CenterPopup, Collapse, Divider, InfiniteScroll, List, Popover, Space } from "antd-mobile";
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -77,7 +77,8 @@ const Reports: React.FC = () => {
   return (
     <>
       <Space direction={"vertical"} style={{"--gap-vertical": "8px"}}>
-        <h6>{reportTypeSlice + "----- Click the picture to see news articles"}</h6>
+        <h6>{"Report Type: " + reportTypeSlice}</h6>
+        <h6>Click the picture to see news articles</h6>
         <Modal
         open = {popUpVisible}
         onOk ={() => {setPopUpVisibile(false)}}
@@ -96,6 +97,14 @@ const Reports: React.FC = () => {
               children={
                 <>
                   <div style={{padding: '20px'}}>
+                    <div style={{fontSize: '115%', fontWeight: 'bold'}}>
+                      {stockReport.stock.name}
+                      <Divider direction="vertical"/>
+                      {stockReport.stock.exchange}
+                      <Divider direction="vertical"/>
+                      {"Sector: " + stockReport.stock.sector}
+                    </div>
+                    
                     <img
                       style={{ maxWidth: "100%", height: "auto" }}
                       src={`data:image/png;base64,${stockReport.reportImage}`}
