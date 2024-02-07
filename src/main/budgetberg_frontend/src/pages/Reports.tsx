@@ -1,5 +1,13 @@
-import { Modal } from "antd";
-import { CenterPopup, Collapse, Divider, InfiniteScroll, List, Popover, Space } from "antd-mobile";
+import { Flex, Modal } from "antd";
+import {
+  CenterPopup,
+  Collapse,
+  Divider,
+  InfiniteScroll,
+  List,
+  Popover,
+  Space,
+} from "antd-mobile";
 
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -55,7 +63,7 @@ const Reports: React.FC = () => {
     queryUrl.searchParams.set("exchanges", exchangesSlice);
     queryUrl.searchParams.set("sectors", sectorsSlice);
     queryUrl.searchParams.set("dateSelected", selectedDateSlice);
-    queryUrl.searchParams.set("offset", stockReportList.length.toString())
+    queryUrl.searchParams.set("offset", stockReportList.length.toString());
     console.log(queryUrl.href);
 
     try {
@@ -64,30 +72,34 @@ const Reports: React.FC = () => {
         // Check for an HTTP error status (e.g., 404 Not Found, 500 Internal Server Error)
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
-      const newReports : StockReport[] = await response.json();
-      if (newReports.length == 0) setHasMore(false)
-      else {setStockReportList((oldReports) => [...oldReports, ...newReports]);}
+      const newReports: StockReport[] = await response.json();
+      if (newReports.length == 0) setHasMore(false);
+      else {
+        setStockReportList((oldReports) => [...oldReports, ...newReports]);
+      }
       return;
     } catch (error) {
       console.log(error);
-      setHasMore(false); //should I keep this line here? 
+      setHasMore(false); //should I keep this line here?
     }
   }
 
   return (
     <>
-      <Space direction={"vertical"} style={{"--gap-vertical": "8px"}}>
+      <Space direction={"vertical"} style={{ "--gap-vertical": "8px" }}>
         <h6>{"Report Type: " + reportTypeSlice}</h6>
         <h6>Click the picture to see news articles</h6>
         <Modal
-        open = {popUpVisible}
-        onOk ={() => {setPopUpVisibile(false)}}
-        centered={true}
-        title={"News Articles"}>
-          
-          <><p>test</p></>
-          
-
+          open={popUpVisible}
+          onOk={() => {
+            setPopUpVisibile(false);
+          }}
+          centered={true}
+          title={"News Articles"}
+        >
+          <>
+            <p>test</p>
+          </>
         </Modal>
         <List>
           {stockReportList.map((stockReport, index) => (
@@ -96,46 +108,57 @@ const Reports: React.FC = () => {
               clickable={true}
               children={
                 <>
-                  <div style={{padding: '20px'}}>
-                    <div style={{fontSize: '2vmin', fontWeight: 'bold', height: "auto"}}>
+                  <div style={{ padding: "15px" }}>
+                    <div style={{ fontSize: "2.0vmin", fontWeight: "bold" }}>
                       {stockReport.stock.name}
-                      <Divider direction="vertical"/>
+                      <Divider direction="vertical" contentPosition="left" />
                       {stockReport.stock.exchange}
-                      <Divider direction="vertical"/>
+                      <Divider direction="vertical" contentPosition="left" />
                       {"Sector: " + stockReport.stock.sector}
                     </div>
-                    
-                    <img
-                      style={{ maxWidth: "100%", height: "auto" }}
-                      src={`data:image/png;base64,${stockReport.reportImage}`}
-                    />
+                    <div style={{ maxWidth: "100%" }}>
+                      <img
+                        style={{ maxWidth: "100%", height: "auto" }}
+                        src={`data:image/png;base64,${stockReport.reportImage}`}
+                      />
+                      <div style={{marginTop : "10px", display : "flex", justifyContent : "space-between"}}>
+                        <button style={{flex : "1"}}>Link To Chart</button>
+                        <button style={{flex : "1"}}>Link To Chart</button>
+                        
+
+
+                      </div>
+                    </div>
                   </div>
                 </>
               }
               onClick={() => {
                 Modal.info({
                   title: "News Articles",
-                  content: 
-                  <>
-                  {
-                    stockReport.newsArticlesList.map((newsArticle, index) => (
-                      <>
-                      <div style={{fontWeight : "bold"}}>{newsArticle.title}</div>
-                      {console.log(newsArticle.date)}
-                      <div>{newsArticle.date}</div>
-                      <div>{newsArticle.text}</div>
-                      <a href={newsArticle.url.toString()} target="_blank">Link</a>
-                      <p></p>
-
-                      </>
-                    ))
-                  }
-                  </>
-                })
-                
-                
-                
-              
+                  content: (
+                    <>
+                      {stockReport.newsArticlesList.map(
+                        (newsArticle, index) => (
+                          <>
+                            <div style={{ fontWeight: "bold" }}>
+                              {newsArticle.title}
+                            </div>
+                            {console.log(newsArticle.date)}
+                            <div>{newsArticle.date}</div>
+                            <div>{newsArticle.text}</div>
+                            <a
+                              href={newsArticle.url.toString()}
+                              target="_blank"
+                            >
+                              Link
+                            </a>
+                            <p></p>
+                          </>
+                        )
+                      )}
+                    </>
+                  ),
+                });
               }}
             ></List.Item>
           ))}
