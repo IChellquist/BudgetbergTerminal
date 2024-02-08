@@ -98,7 +98,7 @@ const Reports: React.FC = () => {
               clickable={false}
               children={
                 <>
-                  <div style={{ maxWidth: "100%", fontSize : "120%"}}>
+                  <div style={{ maxWidth: "100%", fontSize : "105%"}}>
                     <div style={{fontWeight: "bold"}}>
                       {stockReport.stock.name}
                       <Divider direction="vertical" contentPosition="left" />
