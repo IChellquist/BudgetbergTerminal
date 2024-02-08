@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 @Service
 @Getter
@@ -22,7 +23,7 @@ public class StockReportRetrievalServiceImpl implements StockReportRetrievalServ
     private MongoTemplate mongoTemplate;
     @Override
     public List<StockReport> retrieveStockReports(String reportType, List<String> exchanges, List<String> sectors, Date dateSelected, Integer offset) {
-        Calendar cal = Calendar.getInstance();
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("America/New_York"));
         cal.setTime(dateSelected);
 
         cal.set(Calendar.HOUR_OF_DAY, 0);

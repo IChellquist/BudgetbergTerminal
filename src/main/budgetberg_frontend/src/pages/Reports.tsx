@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { Flex, Modal } from "antd";
 import {
   CenterPopup,
@@ -89,77 +90,90 @@ const Reports: React.FC = () => {
       <Space direction={"vertical"} style={{ "--gap-vertical": "8px" }}>
         <h6>{"Report Type: " + reportTypeSlice}</h6>
         <h6>Click the picture to see news articles</h6>
-        <Modal
-          open={popUpVisible}
-          onOk={() => {
-            setPopUpVisibile(false);
-          }}
-          centered={true}
-          title={"News Articles"}
-        >
-          <>
-            <p>test</p>
-          </>
-        </Modal>
+       
         <List>
           {stockReportList.map((stockReport, index) => (
             <List.Item
               key={index}
-              clickable={true}
+              clickable={false}
               children={
                 <>
-                  <div style={{ padding: "15px" }}>
-                    <div style={{ fontSize: "2.0vmin", fontWeight: "bold" }}>
+                  <div style={{ maxWidth: "100%", fontSize : "120%"}}>
+                    <div style={{fontWeight: "bold"}}>
                       {stockReport.stock.name}
                       <Divider direction="vertical" contentPosition="left" />
                       {stockReport.stock.exchange}
                       <Divider direction="vertical" contentPosition="left" />
                       {"Sector: " + stockReport.stock.sector}
                     </div>
-                    <div style={{ maxWidth: "100%" }}>
-                      <img
-                        style={{ maxWidth: "100%", height: "auto" }}
-                        src={`data:image/png;base64,${stockReport.reportImage}`}
-                      />
-                      <div style={{marginTop : "10px", display : "flex", justifyContent : "space-between"}}>
-                        <button style={{flex : "1"}}>Link To Chart</button>
-                        <button style={{flex : "1"}}>Link To Chart</button>
-                        
-
-
-                      </div>
+                    <img
+                      style={{ maxWidth: "100%", height: "auto" }}
+                      src={`data:image/png;base64,${stockReport.reportImage}`}
+                      onClick={() => {
+                        Modal.info({
+                          title: "News Articles",
+                          content: (
+                            <>
+                              {stockReport.newsArticlesList.map(
+                                (newsArticle, index) => (
+                                  <>
+                                    <div style={{ fontWeight: "bold" }}>
+                                      {newsArticle.title}
+                                    </div>
+                                    {console.log(newsArticle.date)}
+                                    <div>{newsArticle.date}</div>
+                                    <div>{newsArticle.text}</div>
+                                    <a
+                                      href={newsArticle.url.toString()}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                    >
+                                      Link
+                                    </a>
+                                    <p></p>
+                                  </>
+                                )
+                              )}
+                            </>
+                          ),
+                        });
+                      }}
+                    />
+                    <div
+                      style={{
+                        marginTop: "10px",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <button
+                        style={{ flex: "1", padding: "10px 20px" }}
+                        onClick={() => {
+                          window.open(
+                            "https://stockcharts.com/h-sc/ui?s=" +
+                              stockReport.stock.symbol,
+                            "_blank"
+                          );
+                        }}
+                      >
+                        Link To StockCharts.com
+                      </button>
+                      <button
+                        style={{ flex: "1", padding: "10px 20px" }}
+                        onClick={() => {
+                          window.open(
+                            "https://www.google.com/search?q=" +
+                              stockReport.stock.name,
+                            "_blank"
+                          );
+                        }}
+                      >
+                        Link To Google Search
+                      </button>
                     </div>
                   </div>
                 </>
               }
-              onClick={() => {
-                Modal.info({
-                  title: "News Articles",
-                  content: (
-                    <>
-                      {stockReport.newsArticlesList.map(
-                        (newsArticle, index) => (
-                          <>
-                            <div style={{ fontWeight: "bold" }}>
-                              {newsArticle.title}
-                            </div>
-                            {console.log(newsArticle.date)}
-                            <div>{newsArticle.date}</div>
-                            <div>{newsArticle.text}</div>
-                            <a
-                              href={newsArticle.url.toString()}
-                              target="_blank"
-                            >
-                              Link
-                            </a>
-                            <p></p>
-                          </>
-                        )
-                      )}
-                    </>
-                  ),
-                });
-              }}
             ></List.Item>
           ))}
         </List>
