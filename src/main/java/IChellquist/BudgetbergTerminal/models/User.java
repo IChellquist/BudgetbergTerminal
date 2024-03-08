@@ -25,12 +25,9 @@ public class User {
     private String id;
     @NotBlank
     @Size(max = 50)
+    @Email
     private String username;
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    private String email;
     @NotBlank
     @Size(max = 120)
     private String password;

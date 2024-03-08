@@ -15,6 +15,7 @@ import io.jsonwebtoken.Jwt;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +51,11 @@ public class AuthorizationController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Value("${default_user}")
+    String defaulEmail;
+    @Value("${default_password}")
+    String defaultPassword;
+
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest){
         log.info("Login request received from user: {}", loginRequest.getUsername());
@@ -61,7 +68,6 @@ public class AuthorizationController {
         JwtResponse response = JwtResponse.builder()
                 .id(userDetails.getId())
                 .username(userDetails.getUsername())
-                .email(userDetails.getEmail())
                 .roles(roles)
                 .token(jwtToken)
                 .type("Bearer")
@@ -72,39 +78,17 @@ public class AuthorizationController {
     }
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signupRequest){
-        if (true){
-            log.info("User creation is currently disabled");
-        }
-        if (userRepository.existsByUsername(signupRequest.getUsername())){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is taken"));
-        }
-        else if (userRepository.existsByEmail(signupRequest.getEmail())){
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use"));
+
+        if (userRepository.existsByUsername(signupRequest.getEmail().toLowerCase())){
+            return ResponseEntity.badRequest().body(new MessageResponse("Error: UserName is taken"));
         }
 
-        User user = User.builder().username(signupRequest.getUsername()).email(signupRequest.getEmail()).password(encoder.encode(signupRequest.getPassword())).build();
-        Set<String> strRoles = signupRequest.getRoles();
-        Set<Role> roles = new HashSet<>();
-
-        if (strRoles == null){
-            Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-            roles.add(userRole);
-        }
-        else {
-            strRoles.forEach(role -> {
-                switch (role){
-                    case "admin":
-                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-                        roles.add(adminRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository.findByName(ERole.ROLE_USER).orElseThrow(() -> new RuntimeException("Error: Role is not found"));
-                }
-            });
-        }
-
-        user.setRoles(roles);
-        userRepository.save(user);
+        userRepository.save(User.builder()
+                .username(signupRequest.getEmail())
+                .password(encoder.encode(signupRequest.getPassword()))
+                .roles(new HashSet<Role>(Arrays.asList(Role.builder().name(ERole.ROLE_USER).build())))
+                .build()
+        );
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully"));
 
