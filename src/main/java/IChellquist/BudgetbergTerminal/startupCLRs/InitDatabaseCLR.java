@@ -42,14 +42,14 @@ public class InitDatabaseCLR implements CommandLineRunner {
     @Order(1)
     public void run(String... args){
 
+        //create collections in the connected database
         if (!mongoTemplate.collectionExists("roles")) mongoTemplate.createCollection("roles");
         if (!mongoTemplate.collectionExists("users")) mongoTemplate.createCollection("users");
         if (!mongoTemplate.collectionExists("StockReports")) mongoTemplate.createCollection("StockReports");
 
-        Role admin = Role.builder().name(ERole.ROLE_ADMIN).build();
-        Role user = Role.builder().name(ERole.ROLE_USER).build();
-        roleRepository.save(admin);
-        roleRepository.save(user);
+        //create the user roles if they do not already exist
+        if (!roleRepository.existsByName(ERole.ROLE_ADMIN)) roleRepository.save(Role.builder().name(ERole.ROLE_ADMIN).build());
+        if (!roleRepository.existsByName(ERole.ROLE_USER)) roleRepository.save(Role.builder().name(ERole.ROLE_USER).build());
 
         if (!userRepository.existsByUsername(defaultUser)){
             User newUser = User.builder()
