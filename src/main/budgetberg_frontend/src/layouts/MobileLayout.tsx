@@ -1,5 +1,4 @@
 import { NavBar } from "antd-mobile";
-import AppBottom from "./MobileLayoutComponents/AppBottom";
 import { Outlet } from "react-router-dom";
 import { TabBar } from "antd-mobile";
 import {
@@ -30,13 +29,12 @@ const Mobile: React.FC = () => {
           <Outlet />
         </div>
         <div className="bottom">
-         
-
             <TabBar activeKey={pathname} onChange={(key) => navigate(key)}>
             <TabBar.Item title={"Reports"} key={"/"} icon={<FolderOutline />} />
             <TabBar.Item title={"Report Settings"} key={"/reportsettings"} icon={<UnorderedListOutline />} />
             {!isLoggedIn ? (<TabBar.Item title={"Login"} key={"/login"} icon={<UserOutline/>}/>) : null}
-            
+            {isLoggedIn && userRole === "ROLE_USER" ?  (<TabBar.Item title={"User Page"} key={"/user"} icon={<UserOutline/>}/>) : null}
+            {isLoggedIn && userRole === "ROLE_ADMIN" ?  (<TabBar.Item title={"Admin Page"} key={"/admin"} icon={<UserOutline/>}/>) : null}
           </TabBar>
         </div>
       </div>

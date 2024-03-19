@@ -3,9 +3,12 @@ import "../css/bootstrap/bootstrap.min.css";
 import useInput from "../hooks/use-input";
 import { useDispatch } from "react-redux";
 import { loginActions } from "../reduxstore/login-slice";
+import { useNavigate } from "react-router-dom";
 
 
 const Login: React.FC = () => {
+
+  const navigate = useNavigate();
 
   
   const {
@@ -61,17 +64,21 @@ const Login: React.FC = () => {
       headers: { "Content-Type": "application/json" },
     });
 
-    if (!response.ok) {
+   if (!response.ok) {
       console.log("Error!");
       setInvalidLogin(true);
       return;
     } else {
       const data: any = await response.json();
-      const jwtToken = data.token;
-      const jwtTokenExpiration = Date.now() + 86400000;
-      localStorage.setItem("jwtToken", jwtToken);
-      localStorage.setItem("jwtTokenExpiration", jwtTokenExpiration.toString());
-      dispatch(loginActions.logIn({}));
+      const jwtLoginInfo = {
+        jwtToken : data.token,
+        jwtTokenExpiration : Date.now() + 86400000,
+        userRoles : data.roles
+      }
+      dispatch(loginActions.logIn(jwtLoginInfo));
+      if (jwtLoginInfo.userRoles[0] === "USER_ADMIN") navigate("/admin")
+      else navigate("/user");
+      
     }
   };
 
